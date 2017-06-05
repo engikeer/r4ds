@@ -35,3 +35,20 @@ ggplot(data = smaller, mapping = aes(x = carat)) +
 # 相似的集群暗示可能存在子分组
 ggplot(data = faithful, mapping = aes(x = eruptions)) + 
     geom_histogram(binwidth = 0.25)
+
+# 大数据集的直方图很难观察异常值
+ggplot(diamonds) + 
+    geom_histogram(mapping = aes(x = y), binwidth = 0.5)
+
+# 通过对较小的值进行缩放，来观察图中的异常值
+ggplot(diamonds) + 
+    geom_histogram(mapping = aes(x = y), binwidth = 0.5) +
+    coord_cartesian(ylim = c(0, 50))
+
+# 使用dplyr筛选出异常值
+unusual <- diamonds %>% 
+    filter(y < 3 | y > 20) %>% 
+    select(price, x, y, z) %>%
+    arrange(y)
+
+
