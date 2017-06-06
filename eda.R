@@ -75,6 +75,7 @@ nycflights13::flights %>%
     ggplot(mapping = aes(sched_dep_time)) + 
     geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
 
+# 类别值与连续值的关系
 # 默认的geom_freqploy使用计数，仅样本量相当时才能看出组间差别
 ggplot(data = diamonds, mapping = aes(x = price)) + 
     geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
@@ -99,3 +100,11 @@ ggplot(data = mpg) +
 ggplot(data = mpg) +
     geom_boxplot(mapping = aes(x = reorder(class, hwy, FUN = median), y = hwy)) +
     coord_flip()
+
+# 两个类别值的关系
+ggplot(data = diamonds) +
+    geom_count(mapping = aes(x = cut, y = color))
+
+# 可以通过dplyr计算类别值
+diamonds %>% 
+    count(color, cut)
