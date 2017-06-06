@@ -83,3 +83,19 @@ ggplot(data = diamonds, mapping = aes(x = price)) +
 ggplot(diamonds) + 
     geom_bar(mapping = aes(x = cut))
 
+# 可将y坐标改为密度来显示组间差别
+ggplot(data = diamonds, mapping = aes(x = price, y = ..density..)) + 
+    geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
+
+# 可以用箱线图探究分布的差别
+ggplot(data = diamonds, mapping = aes(x = cut, y = price)) +
+    geom_boxplot()
+
+# 使用reorder()对因子水平重排序
+ggplot(data = mpg) +
+    geom_boxplot(mapping = aes(x = reorder(class, hwy, FUN = median), y = hwy))
+
+# 通过coord_flip()将图形旋转90度，以显示长变量名
+ggplot(data = mpg) +
+    geom_boxplot(mapping = aes(x = reorder(class, hwy, FUN = median), y = hwy)) +
+    coord_flip()
