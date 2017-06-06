@@ -51,4 +51,35 @@ unusual <- diamonds %>%
     select(price, x, y, z) %>%
     arrange(y)
 
+# 移除含有异常值的观测
+diamonds2 <- diamonds %>% 
+    filter(between(y, 3, 20))
+
+# 将异常值替换为缺失值
+diamonds2 <- diamonds %>% 
+    mutate(y = ifelse(y < 3 | y > 20, NA, y))
+
+# ggplot2会移除含有缺失值的行并给出提示
+ggplot(data = diamonds2, mapping = aes(x = x, y = y)) + 
+    geom_point()
+#> Warning: Removed 9 rows containing missing values (geom_point).
+
+# 可以通过is.na()创建一个新变量来比较含有缺失值的观测与其他观测有何不同
+nycflights13::flights %>% 
+    mutate(
+        cancelled = is.na(dep_time),
+        sched_hour = sched_dep_time %/% 100,
+        sched_min = sched_dep_time %% 100,
+        sched_dep_time = sched_hour + sched_min / 60
+    ) %>% 
+    ggplot(mapping = aes(sched_dep_time)) + 
+    geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+
+# 默认的geom_freqploy使用计数，仅样本量相当时才能看出组间差别
+ggplot(data = diamonds, mapping = aes(x = price)) + 
+    geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
+
+# 查看样本数的差别
+ggplot(diamonds) + 
+    geom_bar(mapping = aes(x = cut))
 
