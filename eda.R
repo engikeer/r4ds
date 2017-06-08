@@ -105,6 +105,22 @@ ggplot(data = mpg) +
 ggplot(data = diamonds) +
     geom_count(mapping = aes(x = cut, y = color))
 
-# 可以通过dplyr计算类别值
+# 可以通过dplyr计算类别值，然后通过geom_tile()进行可视化
 diamonds %>% 
-    count(color, cut)
+    count(color, cut) %>%  
+    ggplot(mapping = aes(x = color, y = cut)) +
+    geom_tile(mapping = aes(fill = n))
+
+# 如果样本量很大，可以使用方块图来可视化
+smaller <- diamonds %>% 
+    filter(carat < 3)
+
+# 方块图
+ggplot(data = smaller) +
+    geom_bin2d(mapping = aes(x = carat, y = price))
+
+# install.packages("hexbin")
+
+# 六边形图
+ggplot(data = smaller) +
+    geom_hex(mapping = aes(x = carat, y = price))
