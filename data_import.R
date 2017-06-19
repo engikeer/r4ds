@@ -1,3 +1,5 @@
+library(tidyverse)
+
 read_csv("test.csv",
          col_types = cols(
              名称 = col_character(),
@@ -6,3 +8,9 @@ read_csv("test.csv",
                 日期 = col_date(format = "%m,%d,%y")
          ),
          locale = locale(encoding = "gbk"))
+
+table2 %>% 
+    gather(type:count, key = "te", value = "st") %>%
+    View()
+
+# end file
