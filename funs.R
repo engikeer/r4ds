@@ -5,6 +5,9 @@ df <- tibble::tibble(
     d = rnorm(10)
 )
 
+# read data ---------------------------------------------------------------
+
+
 # 重复代码
 df$a <- (df$a - min(df$a, na.rm = TRUE)) / 
     (max(df$a, na.rm = TRUE) - min(df$a, na.rm = TRUE))
