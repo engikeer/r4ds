@@ -123,4 +123,30 @@ models %>%
 x <- list(list(1, 2, 3), list(4, 5, 6), list(7, 8, 9))
 x %>% map_dbl(2)
 
+# 使用safely()函数处理失败的结果
+safe_log <- safely(log)
+# 成功时
+str(safe_log(10))
+# 失败时
+str(safe_log("a"))
+# 与map()结合使用
+x <- list(1, 10, "a")
+y <- x %>% map(safely(log))
+str(y)
+y <- y %>% transpose()
+str(y)
 
+# 最常见的错误处理方式
+# 找到错误对应的输入
+is_ok <- y$error %>% map_lgl(is_null)
+x[!is_ok]
+# 显示成功执行的结果
+y$result[is_ok] %>% flatten_dbl()
+
+# possibly
+x <- list(1, 10, "a")
+x %>% map_dbl(possibly(log, NA_real_))
+
+# quietly
+x <- list(1, -1)
+x %>% map(quietly(log)) %>% str()
