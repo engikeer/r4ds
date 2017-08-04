@@ -150,3 +150,42 @@ x %>% map_dbl(possibly(log, NA_real_))
 # quietly
 x <- list(1, -1)
 x %>% map(quietly(log)) %>% str()
+
+# map2
+mu <- list(5, 10, -3)
+sigma <- list(1, 5, 10)
+map2(mu, sigma, rnorm, n = 5) %>% str()
+
+# pmap
+n <- list(1, 3, 5)
+args1 <- list(n, mu, sigma)
+args1 %>%
+    pmap(rnorm) %>% 
+    str()
+
+params <- tribble(
+    ~mean, ~sd, ~n,
+    5,     1,  1,
+    10,     5,  3,
+    -3,    10,  5
+)
+params %>% 
+    pmap(rnorm)
+
+# invoke_map
+f <- c("runif", "rnorm", "rpois")
+param <- list(
+    list(min = -1, max = 1), 
+    list(sd = 5), 
+    list(lambda = 10)
+)
+invoke_map(f, param, n = 5) %>% str()
+
+sim <- tribble(
+    ~f,      ~params,
+    "runif", list(min = -1, max = 1),
+    "rnorm", list(sd = 5),
+    "rpois", list(lambda = 10)
+)
+sim %>% 
+    mutate(sim = invoke_map(f, params, n = 10))
