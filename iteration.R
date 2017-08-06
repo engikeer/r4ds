@@ -189,3 +189,66 @@ sim <- tribble(
 )
 sim %>% 
     mutate(sim = invoke_map(f, params, n = 10))
+
+# walk
+x <- list(1, "a", 3)
+
+x %>% 
+    walk(print)
+
+# pwalk
+library(ggplot2)
+plots <- mtcars %>% 
+    split(.$cyl) %>% 
+    map(~ggplot(., aes(mpg, wt)) + geom_point())
+paths <- stringr::str_c(names(plots), ".pdf")
+
+pwalk(list(paths, plots), ggsave, path = tempdir())
+
+# Predicate functions
+# keep and discard
+iris %>% 
+    keep(is.factor) %>% 
+    str()
+
+iris %>% 
+    discard(is.factor) %>% 
+    str()
+
+# some and every
+x <- list(1:5, letters, list(10))
+
+x %>% 
+    some(is_character)
+
+x %>% 
+    every(is_vector)
+
+# detect 
+x <- sample(10)
+
+x %>% 
+    detect(~ . > 5)
+
+x %>% 
+    detect_index(~ . > 5)
+
+# head_while and tail while
+x %>% 
+    head_while(~ . > 5)
+
+x %>% 
+    tail_while(~ . > 5)
+
+# reduce
+dfs <- list(
+    age = tibble(name = "John", age = 30),
+    sex = tibble(name = c("John", "Mary"), sex = c("M", "F")),
+    trt = tibble(name = "Mary", treatment = "A")
+)
+
+dfs %>% reduce(full_join)
+
+# accumulate
+x <- sample(10)
+x %>% accumulate(`+`)
