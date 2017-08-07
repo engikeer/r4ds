@@ -106,3 +106,8 @@ sim1
 # 残差频率图
 ggplot(sim1, aes(resid)) + 
     geom_freqpoly(binwidth = 0.5)
+
+# 残差分布图
+ggplot(sim1, aes(x, resid)) + 
+    geom_ref_line(h = 0) +
+    geom_point()
