@@ -111,3 +111,5 @@ ggplot(sim1, aes(resid)) +
 ggplot(sim1, aes(x, resid)) + 
     geom_ref_line(h = 0) +
     geom_point()
+
+# 
